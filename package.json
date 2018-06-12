@@ -1,0 +1,20 @@
+{
+  "name": "redux-example",
+  "version": "1.0.0",
+  "description": "learning redux",
+  "main": "index.js",
+  "scripts": {
+    "start": "babel-node ./src/"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-cli": "^6.16.0",
+    "babel-preset-latest": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.16.0"
+  }
+}
