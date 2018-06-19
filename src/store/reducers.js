@@ -1,4 +1,5 @@
 import C from '../constants';
+import { combineReducers } from 'redux';
 
 export const goal = (state = 10, action) =>
   ((action.type === C.SET_GOAL) ?
@@ -36,7 +37,7 @@ export const allSkiDays = (state = [], action) => {
         [
           ...state,
           skiDay(null, action),
-        ];
+        ].sort((a, b) => new Date(b.date) - new Date(a.date));
     }
     case C.REMOVE_DAY:
       return state.filter(skiDay => skiDay.date !== action.payload);
@@ -46,7 +47,7 @@ export const allSkiDays = (state = [], action) => {
 };
 
 
-export const fetching = (state=false, action) => {
+export const fetching = (state = false, action) => {
   switch (action.type) {
     case C.FETCH_RESORT_NAMES: {
       return true;
@@ -57,7 +58,6 @@ export const fetching = (state=false, action) => {
     case C.CHANGE_SUGGESTIONS: {
       return false;
     }
-
     default:
       return state;
   }
@@ -71,8 +71,17 @@ export const suggestions = (state = [], action) => {
     case C.CHANGE_SUGGESTIONS: {
       return action.payload;
     }
-
     default:
-      state;
+      return state;
   }
 };
+
+export default combineReducers({
+  allSkiDays,
+  goal,
+  errors,
+  resortNames: combineReducers({
+    fetching,
+    suggestions,
+  }),
+});
