@@ -51,8 +51,28 @@ import { fetching, allSkiDays } from './store/reducers';
 
   console.log(`
 
-    Test for Fetch Resort Names
-    Test A: FETCH_RESORT_NAMES Passed!!!
+    Test for FETCH_RESORT_NAMES Passed!!!
 
     `);
 }
+
+
+/* Test for Cancel Fetch  */
+{
+  const action = {
+    type: C.CANCEL_FETCHING,
+  };
+
+  const state = true;
+  const expectedState = false;
+
+  const actualState = fetching(state, action);
+
+  expect(actialState).toEqual(expectedState);
+
+  console.log(`
+    Test for FETCH_RESORT_NAMES Passed!!!
+    `);
+}
+
+
