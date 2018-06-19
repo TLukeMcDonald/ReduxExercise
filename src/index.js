@@ -49,7 +49,9 @@ import { suggestions, fetching, allSkiDays } from './store/reducers';
 
   expect(actualState).toEqual(expectedState);
 
-  console.log(`    Test for FETCH_RESORT_NAMES Passed!!!`);
+  console.log(`    Test for FETCH_RESORT_NAMES Passed!!!
+      initial state: ${JSON.stringify(state)}
+      new state: ${JSON.stringify(expectedState)}`);
 }
 
 
@@ -67,8 +69,8 @@ import { suggestions, fetching, allSkiDays } from './store/reducers';
   expect(actualState).toEqual(expectedState);
 
   console.log(`    Test for CANCEL_FETCHING Passed!!!
-        initial state: ${JSON.stringify(state)}
-        new state: ${JSON.stringify(expectedState)}`);
+      initial state: ${JSON.stringify(state)}
+      new state: ${JSON.stringify(expectedState)}`);
 }
 
 /* Test for Clear Suggestions  */
