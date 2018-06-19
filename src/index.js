@@ -1,6 +1,6 @@
 import C from './constants';
 import expect from 'expect';
-import { fetching, allSkiDays } from './store/reducers';
+import { suggestions, fetching, allSkiDays } from './store/reducers';
 
 
 /*  Test for Remove Day */
@@ -49,11 +49,7 @@ import { fetching, allSkiDays } from './store/reducers';
 
   expect(actualState).toEqual(expectedState);
 
-  console.log(`
-
-    Test for FETCH_RESORT_NAMES Passed!!!
-
-    `);
+  console.log(`    Test for FETCH_RESORT_NAMES Passed!!!`);
 }
 
 
@@ -68,11 +64,59 @@ import { fetching, allSkiDays } from './store/reducers';
 
   const actualState = fetching(state, action);
 
-  expect(actialState).toEqual(expectedState);
+  expect(actualState).toEqual(expectedState);
 
-  console.log(`
-    Test for FETCH_RESORT_NAMES Passed!!!
-    `);
+  console.log(`    Test for CANCEL_FETCHING Passed!!!
+        initial state: ${JSON.stringify(state)}
+        new state: ${JSON.stringify(expectedState)}`);
 }
 
+/* Test for Clear Suggestions  */
+{
+  const action = {
+    type: C.CLEAR_SUGGESTIONS,
+  };
+
+  const state = ['Heavenly Ski Resort', 'Heavens Sonohara'];
+
+  const expectedState = [];
+
+  const actualState = suggestions(state, action);
+
+  expect(actualState).toEqual(expectedState);
+
+  console.log(`    Test for CLEAR_SUGGESTIONS Passed!!!
+      initial state: ${JSON.stringify(state)}
+      new state: ${JSON.stringify(expectedState)}`);
+}
+
+/* Test for Change Suggestions */
+{
+  const action = {
+    type: C.CHANGE_SUGGESTIONS,
+    payload: ['Heavenly Ski Resort', 'Heavens Sonohara'],
+  };
+
+  const state = {
+    fetching: true,
+    suggestions: [],
+  };
+
+  const expectedState = {
+    fetching: false,
+    suggestions: ['Heavenly Ski Resort', 'Heavens Sonohara'],
+  };
+
+  const actualState = {
+    fetching: fetching(state.fetching, action),
+    suggestions: suggestions(state.suggestions, action),
+  };
+
+  expect(actualState.fetching).toEqual(expectedState.fetching);
+  expect(actualState.suggestions).toEqual(expectedState.suggestions);
+
+  console.log(`    Test for CHANGE_SUGGESTIONS Passed!!!
+      initial state: ${JSON.stringify(state)}
+      new state: ${JSON.stringify(expectedState)}`);
+}
 
