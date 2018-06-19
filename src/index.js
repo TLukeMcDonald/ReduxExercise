@@ -309,6 +309,7 @@ console.log(`
 
   console.log(`    Test for CHANGE_SUGGESTIONS Passed!!!
       initial state: ${JSON.stringify(state)}
-      new state: ${JSON.stringify(expectedState)}`);
+      new state: ${JSON.stringify(expectedState)}
+      `);
 }
 
