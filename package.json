@@ -1,28 +1,33 @@
 {
   "name": "redux-example",
   "version": "1.0.0",
-  "description": "learning redux",
+  "description": "Learning Redux fromn Linkedin Learning",
   "main": "index.js",
   "scripts": {
-    "start": "babel-node ./src/"
+    "start": "webpack-dev-server",
+    "build": "webpack ./index.js bundle.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "babel-cli": "^6.16.0",
-    "babel-preset-latest": "^6.16.0",
     "expect": "^23.1.0",
-    "redux": "^4.0.0"
+    "redux": "^3.6.0"
   },
   "devDependencies": {
-    "babel-preset-env": "^1.7.0",
+    "babel-core": "^6.18.0",
+    "babel-loader": "^6.2.6",
+    "babel-preset-latest": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
-    "enzyme": "^3.3.0",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.12.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.9.1",
-    "react-test-renderer": "^16.4.1"
-  }
+    "json-loader": "^0.5.4",
+    "webpack": "^1.15.0",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TLukeMcDonald/ReduxExercise.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TLukeMcDonald/ReduxExercise/issues"
+  },
+  "homepage": "https://github.com/TLukeMcDonald/ReduxExercise#readme"
 }
