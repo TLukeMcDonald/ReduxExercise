@@ -193,9 +193,6 @@ console.log(`
   //     new state: ${JSON.stringify(nextState)}`);
 }
 
-
-
-
 /*  Test for Remove Day */
 {
   const state = [
