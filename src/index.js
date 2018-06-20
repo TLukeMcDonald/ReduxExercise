@@ -60,11 +60,11 @@ console.log(`
   const nextState = goal(state, action);
 
   expect(nextState).toEqual(expectedState);
-
-  console.log(`    Test for Goal Passed!!!
-      initial state: ${state}
-      action: ${JSON.stringify(action)}
-      new state: ${nextState}`);
+  console.log(`    Test for Goal Passed!!!`);
+  // console.log(`    Test for Goal Passed!!!
+  //     initial state: ${state}
+  //     action: ${JSON.stringify(action)}
+  //     new state: ${nextState}`);
 }
 
 /*  Test for Ski Day  */
@@ -90,11 +90,11 @@ console.log(`
   const nextState = skiDay(state, action);
 
   expect(nextState).toEqual(expectedState);
-
-  console.log(`    Test for Ski Day Passed!!!
-      initial state: ${state}
-      action: ${JSON.stringify(action)}
-      new state: ${JSON.stringify(nextState)}`);
+  console.log(`    Test for Ski Day Passed!!!`);
+  // console.log(`    Test for Ski Day Passed!!!
+  //     initial state: ${state}
+  //     action: ${JSON.stringify(action)}
+  //     new state: ${JSON.stringify(nextState)}`);
 }
 
 
@@ -117,11 +117,11 @@ console.log(`
   const nextState = errors(state, action);
 
   expect(nextState).toEqual(expectedState);
-
-  console.log(`    Test for Adding Errors Passed!!!
-      initial state: ${state}
-      action: ${JSON.stringify(action)}
-      new state: ${JSON.stringify(nextState)}`);
+  console.log(`    Test for Adding Errors Passed!!!`);
+  // console.log(`    Test for Adding Errors Passed!!!
+  //     initial state: ${state}
+  //     action: ${JSON.stringify(action)}
+  //     new state: ${JSON.stringify(nextState)}`);
 }
 
 
@@ -142,11 +142,11 @@ console.log(`
   const nextState = errors(state, action);
 
   expect(nextState).toEqual(expectedState);
-
-  console.log(`    Test for Removing Errors Passed!!!
-      initial state: ${state}
-      action: ${JSON.stringify(action)}
-      new state: ${JSON.stringify(nextState)}`);
+  console.log(`    Test for Removing Errors Passed!!!`);
+  // console.log(`    Test for Removing Errors Passed!!!
+  //     initial state: ${state}
+  //     action: ${JSON.stringify(action)}
+  //     new state: ${JSON.stringify(nextState)}`);
 }
 
 
@@ -186,11 +186,11 @@ console.log(`
   };
 
   const nextState = allSkiDays(state, action);
-
-  console.log(`    Test for Add Day Passed!!!
-      initial state: ${JSON.stringify(state)}
-      action: ${JSON.stringify(action)}
-      new state: ${JSON.stringify(nextState)}`);
+  console.log(`    Test for Add Day Passed!!!`);
+  // console.log(`    Test for Add Day Passed!!!
+  //     initial state: ${JSON.stringify(state)}
+  //     action: ${JSON.stringify(action)}
+  //     new state: ${JSON.stringify(nextState)}`);
 }
 
 
@@ -219,11 +219,11 @@ console.log(`
   };
 
   const nextState = allSkiDays(state, action);
-
-  console.log(`    Test for Remove Day Passed!!!
-      initial state: ${JSON.stringify(state)}
-      action: ${JSON.stringify(action)}
-      new state: ${JSON.stringify(nextState)}`);
+  console.log(`    Test for Remove Day Passed!!!`);
+  // console.log(`    Test for Remove Day Passed!!!
+  //     initial state: ${JSON.stringify(state)}
+  //     action: ${JSON.stringify(action)}
+  //     new state: ${JSON.stringify(nextState)}`);
 }
 
 
@@ -238,10 +238,10 @@ console.log(`
   const actualState = fetching(state, action);
 
   expect(actualState).toEqual(expectedState);
-
-  console.log(`    Test for FETCH_RESORT_NAMES Passed!!!
-      initial state: ${JSON.stringify(state)}
-      new state: ${JSON.stringify(expectedState)}`);
+  console.log(`    Test for FETCH_RESORT_NAMES Passed!!!`);
+  // console.log(`    Test for FETCH_RESORT_NAMES Passed!!!
+  //     initial state: ${JSON.stringify(state)}
+  //     new state: ${JSON.stringify(expectedState)}`);
 }
 
 
@@ -257,10 +257,10 @@ console.log(`
   const actualState = fetching(state, action);
 
   expect(actualState).toEqual(expectedState);
-
-  console.log(`    Test for CANCEL_FETCHING Passed!!!
-      initial state: ${JSON.stringify(state)}
-      new state: ${JSON.stringify(expectedState)}`);
+  console.log(`    Test for CANCEL_FETCHING Passed!!!`);
+  // console.log(`    Test for CANCEL_FETCHING Passed!!!
+  //     initial state: ${JSON.stringify(state)}
+  //     new state: ${JSON.stringify(expectedState)}`);
 }
 
 /* Test for Clear Suggestions  */
@@ -276,10 +276,10 @@ console.log(`
   const actualState = suggestions(state, action);
 
   expect(actualState).toEqual(expectedState);
-
-  console.log(`    Test for CLEAR_SUGGESTIONS Passed!!!
-      initial state: ${JSON.stringify(state)}
-      new state: ${JSON.stringify(expectedState)}`);
+  console.log(`    Test for CLEAR_SUGGESTIONS Passed!!!`);
+  // console.log(`    Test for CLEAR_SUGGESTIONS Passed!!!
+  //     initial state: ${JSON.stringify(state)}
+  //     new state: ${JSON.stringify(expectedState)}`);
 }
 
 /* Test for Change Suggestions */
@@ -306,9 +306,9 @@ console.log(`
 
   expect(actualState.fetching).toEqual(expectedState.fetching);
   expect(actualState.suggestions).toEqual(expectedState.suggestions);
-
-  console.log(`    Test for CHANGE_SUGGESTIONS Passed!!!
-      initial state: ${JSON.stringify(state)}
-      new state: ${JSON.stringify(expectedState)}`);
+  console.log(`    Test for CHANGE_SUGGESTIONS Passed!!!`);
+  // console.log(`    Test for CHANGE_SUGGESTIONS Passed!!!
+  //     initial state: ${JSON.stringify(state)}
+  //     new state: ${JSON.stringify(expectedState)}`);
 }
 
