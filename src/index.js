@@ -1,20 +1,18 @@
 import { createStore } from 'redux';
 import C from './constants';
 import appReducer from './store/reducers';
-import initialState from './initialState.json';
+
+const initialState = (localStorage['redux-store']) ? JSON.parse(localStorage['redux-store']) : {};
 
 const store = createStore(appReducer, initialState);
 
-console.log('initial state', store.getState());
+// to-do remove for production. This is only for debugging.
+window.store = store;
 
-store.dispatch({
-  type: C.ADD_DAY,
-  payload: {
-    resort: 'Mt Shasta',
-    date: '2016-10-28',
-    powder: false,
-    backcountry: true,
-  },
+// add callback handlers that ar invoked every time an action is dispatched
+store.subscribe(() => console.log(store.getState()));
+
+store.subscribe(() => {
+  const state = JSON.stringify(store.getState());
+  localStorage['redux-store'] = state;
 });
-
-console.log('next state', store.getState());
