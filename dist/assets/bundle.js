@@ -55,40 +55,257 @@
 
 	'use strict';
 
-	var _redux = __webpack_require__(2);
+	var _store = __webpack_require__(2);
 
-	var _constants = __webpack_require__(23);
+	var _store2 = _interopRequireDefault(_store);
 
-	var _constants2 = _interopRequireDefault(_constants);
-
-	var _reducers = __webpack_require__(24);
-
-	var _reducers2 = _interopRequireDefault(_reducers);
-
-	var _initialState = __webpack_require__(25);
-
-	var _initialState2 = _interopRequireDefault(_initialState);
+	var _actions = __webpack_require__(27);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var store = (0, _redux.createStore)(_reducers2.default, _initialState2.default);
+	var store = (0, _store2.default)();
+	var state = store.getState();
 
-	console.log('initial state', store.getState());
+	// store.dispatch(addDay('Heavenly', '2016-12-22'));
 
-	store.dispatch({
-	  type: _constants2.default.ADD_DAY,
-	  payload: {
-	    resort: 'Mt Shasta',
-	    date: '2016-10-28',
-	    powder: false,
-	    backcountry: true
-	  }
-	});
 
-	console.log('next state', store.getState());
+	// store.dispatch(removeDay('2016-12-22'));
+
+
+	// store.dispatch(setGoal(20));
+
+
+	// store.dispatch(addError('something went wrong'));
+	// expect(store.getState().errors).toEqual(['something went wrong']);
+	// console.log(`
+	//   addError() Action Creator Works!!!
+	//   `);
+
+	// store.dispatch(clearError(0));
+	// expect(store.getState().errors).toEqual([]);
+	// console.log(`
+	//   ClearError() Action Creator Works!!!
+	//   `);
+
+	// store.dispatch(changeSuggestions(['One', 'Two', 'Three']));
+	// expect(store.getState().resortNames.suggestions).toEqual(['One', 'Two', 'Three']);
+	// console.log(`
+	//   changeSuggestions() Action Creator Works!!!
+	//   `);
+
+	// store.dispatch(clearSuggestions());
+	// expect(store.getState().resortNames.suggestions).toEqual([]);
+	// console.log(`
+	//   clearSuggestions() Action Creator Works!!!
+	//   `);
+
+	// store.dispatch(randomGoals());
+
+	store.dispatch((0, _actions.suggestResortNames)('hea'));
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _constants = __webpack_require__(3);
+
+	var _constants2 = _interopRequireDefault(_constants);
+
+	var _reducers = __webpack_require__(4);
+
+	var _reducers2 = _interopRequireDefault(_reducers);
+
+	var _reduxThunk = __webpack_require__(26);
+
+	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+
+	var _redux = __webpack_require__(5);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// logging messages
+	var consoleMessages = function consoleMessages(store) {
+	  return function (next) {
+	    return function (action) {
+	      var result = void 0;
+
+	      console.groupCollapsed('dispatching action => ' + action.type);
+	      console.log('ski days', store.getState().allSkiDays.length);
+	      result = next(action);
+
+	      var _store$getState = store.getState(),
+	          allSkiDays = _store$getState.allSkiDays,
+	          goal = _store$getState.goal,
+	          errors = _store$getState.errors,
+	          resortNames = _store$getState.resortNames;
+
+	      console.log('\n    ski days: ' + allSkiDays.length + '\n    goal: ' + goal + '\n    fetching: ' + resortNames.fetching + '\n    suggestions: ' + resortNames.suggestions + '\n    errors: ' + errors.length + '\n\n  ');
+	      console.groupEnd();
+
+	      return result;
+	    };
+	  };
+	};
+
+	exports.default = function () {
+	  var initialState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+	  return (0, _redux.applyMiddleware)(_reduxThunk2.default, consoleMessages)(_redux.createStore)(_reducers2.default, initialState);
+	};
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var constants = {
+	  ADD_DAY: 'ADD_DAY',
+	  REMOVE_DAY: 'REMOVE_DAY',
+	  SET_GOAL: 'SET_GOAL',
+	  ADD_ERROR: 'ADD_ERROR',
+	  CLEAR_ERROR: 'CLEAR_ERROR',
+	  FETCH_RESORT_NAMES: 'FETCH_RESORT_NAMES',
+	  CANCEL_FETCHING: 'CANCEL_FETCHING',
+	  CHANGE_SUGGESTIONS: 'CHANGE_SUGGESTIONS',
+	  CLEAR_SUGGESTIONS: 'CLEAR_SUGGESTIONS'
+	};
+
+	exports.default = constants;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.suggestions = exports.fetching = exports.allSkiDays = exports.errors = exports.skiDay = exports.goal = undefined;
+
+	var _constants = __webpack_require__(3);
+
+	var _constants2 = _interopRequireDefault(_constants);
+
+	var _redux = __webpack_require__(5);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	var goal = exports.goal = function goal() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
+	  var action = arguments[1];
+	  return action.type === _constants2.default.SET_GOAL ? parseInt(action.payload) : state;
+	};
+
+	var skiDay = exports.skiDay = function skiDay() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+	  var action = arguments[1];
+	  return action.type === _constants2.default.ADD_DAY ? action.payload : state;
+	};
+
+	var errors = exports.errors = function errors() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _constants2.default.ADD_ERROR:
+	      return [].concat(_toConsumableArray(state), [action.payload]);
+	    case _constants2.default.CLEAR_ERROR:
+	      return state.filter(function (message, i) {
+	        return i !== action.payload;
+	      });
+	    default:
+	      return state;
+	  }
+	};
+
+	var allSkiDays = exports.allSkiDays = function allSkiDays() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _constants2.default.ADD_DAY:
+	      {
+	        var hadDay = state.some(function (skiDay) {
+	          return skiDay.date === action.payload.date;
+	        });
+	        return hadDay ? state : [].concat(_toConsumableArray(state), [skiDay(null, action)]).sort(function (a, b) {
+	          return new Date(b.date) - new Date(a.date);
+	        });
+	      }
+	    case _constants2.default.REMOVE_DAY:
+	      return state.filter(function (skiDay) {
+	        return skiDay.date !== action.payload;
+	      });
+	    default:
+	      return state;
+	  }
+	};
+
+	var fetching = exports.fetching = function fetching() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _constants2.default.FETCH_RESORT_NAMES:
+	      {
+	        return true;
+	      }
+	    case _constants2.default.CANCEL_FETCHING:
+	      {
+	        return false;
+	      }
+	    case _constants2.default.CHANGE_SUGGESTIONS:
+	      {
+	        return false;
+	      }
+	    default:
+	      return state;
+	  }
+	};
+
+	var suggestions = exports.suggestions = function suggestions() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case _constants2.default.CLEAR_SUGGESTIONS:
+	      {
+	        return [];
+	      }
+	    case _constants2.default.CHANGE_SUGGESTIONS:
+	      {
+	        return action.payload;
+	      }
+	    default:
+	      return state;
+	  }
+	};
+
+	exports.default = (0, _redux.combineReducers)({
+	  allSkiDays: allSkiDays,
+	  goal: goal,
+	  errors: errors,
+	  resortNames: (0, _redux.combineReducers)({
+	    fetching: fetching,
+	    suggestions: suggestions
+	  })
+	});
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -96,27 +313,27 @@
 	exports.__esModule = true;
 	exports.compose = exports.applyMiddleware = exports.bindActionCreators = exports.combineReducers = exports.createStore = undefined;
 
-	var _createStore = __webpack_require__(4);
+	var _createStore = __webpack_require__(7);
 
 	var _createStore2 = _interopRequireDefault(_createStore);
 
-	var _combineReducers = __webpack_require__(18);
+	var _combineReducers = __webpack_require__(21);
 
 	var _combineReducers2 = _interopRequireDefault(_combineReducers);
 
-	var _bindActionCreators = __webpack_require__(20);
+	var _bindActionCreators = __webpack_require__(23);
 
 	var _bindActionCreators2 = _interopRequireDefault(_bindActionCreators);
 
-	var _applyMiddleware = __webpack_require__(21);
+	var _applyMiddleware = __webpack_require__(24);
 
 	var _applyMiddleware2 = _interopRequireDefault(_applyMiddleware);
 
-	var _compose = __webpack_require__(22);
+	var _compose = __webpack_require__(25);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
-	var _warning = __webpack_require__(19);
+	var _warning = __webpack_require__(22);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -137,10 +354,10 @@
 	exports.bindActionCreators = _bindActionCreators2['default'];
 	exports.applyMiddleware = _applyMiddleware2['default'];
 	exports.compose = _compose2['default'];
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
-/* 3 */
+/* 6 */
 /***/ (function(module, exports) {
 
 	// shim for using process in browser
@@ -330,7 +547,7 @@
 
 
 /***/ }),
-/* 4 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -339,11 +556,11 @@
 	exports.ActionTypes = undefined;
 	exports['default'] = createStore;
 
-	var _isPlainObject = __webpack_require__(5);
+	var _isPlainObject = __webpack_require__(8);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _symbolObservable = __webpack_require__(15);
+	var _symbolObservable = __webpack_require__(18);
 
 	var _symbolObservable2 = _interopRequireDefault(_symbolObservable);
 
@@ -596,12 +813,12 @@
 	}
 
 /***/ }),
-/* 5 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var baseGetTag = __webpack_require__(6),
-	    getPrototype = __webpack_require__(12),
-	    isObjectLike = __webpack_require__(14);
+	var baseGetTag = __webpack_require__(9),
+	    getPrototype = __webpack_require__(15),
+	    isObjectLike = __webpack_require__(17);
 
 	/** `Object#toString` result references. */
 	var objectTag = '[object Object]';
@@ -664,12 +881,12 @@
 
 
 /***/ }),
-/* 6 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Symbol = __webpack_require__(7),
-	    getRawTag = __webpack_require__(10),
-	    objectToString = __webpack_require__(11);
+	var Symbol = __webpack_require__(10),
+	    getRawTag = __webpack_require__(13),
+	    objectToString = __webpack_require__(14);
 
 	/** `Object#toString` result references. */
 	var nullTag = '[object Null]',
@@ -698,10 +915,10 @@
 
 
 /***/ }),
-/* 7 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var root = __webpack_require__(8);
+	var root = __webpack_require__(11);
 
 	/** Built-in value references. */
 	var Symbol = root.Symbol;
@@ -710,10 +927,10 @@
 
 
 /***/ }),
-/* 8 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var freeGlobal = __webpack_require__(9);
+	var freeGlobal = __webpack_require__(12);
 
 	/** Detect free variable `self`. */
 	var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
@@ -725,7 +942,7 @@
 
 
 /***/ }),
-/* 9 */
+/* 12 */
 /***/ (function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
@@ -736,10 +953,10 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ }),
-/* 10 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Symbol = __webpack_require__(7);
+	var Symbol = __webpack_require__(10);
 
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -788,7 +1005,7 @@
 
 
 /***/ }),
-/* 11 */
+/* 14 */
 /***/ (function(module, exports) {
 
 	/** Used for built-in method references. */
@@ -816,10 +1033,10 @@
 
 
 /***/ }),
-/* 12 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var overArg = __webpack_require__(13);
+	var overArg = __webpack_require__(16);
 
 	/** Built-in value references. */
 	var getPrototype = overArg(Object.getPrototypeOf, Object);
@@ -828,7 +1045,7 @@
 
 
 /***/ }),
-/* 13 */
+/* 16 */
 /***/ (function(module, exports) {
 
 	/**
@@ -849,7 +1066,7 @@
 
 
 /***/ }),
-/* 14 */
+/* 17 */
 /***/ (function(module, exports) {
 
 	/**
@@ -884,7 +1101,7 @@
 
 
 /***/ }),
-/* 15 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, module) {'use strict';
@@ -893,7 +1110,7 @@
 	  value: true
 	});
 
-	var _ponyfill = __webpack_require__(17);
+	var _ponyfill = __webpack_require__(20);
 
 	var _ponyfill2 = _interopRequireDefault(_ponyfill);
 
@@ -916,10 +1133,10 @@
 
 	var result = (0, _ponyfill2['default'])(root);
 	exports['default'] = result;
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(16)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(19)(module)))
 
 /***/ }),
-/* 16 */
+/* 19 */
 /***/ (function(module, exports) {
 
 	module.exports = function(module) {
@@ -935,7 +1152,7 @@
 
 
 /***/ }),
-/* 17 */
+/* 20 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -963,7 +1180,7 @@
 	};
 
 /***/ }),
-/* 18 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -971,13 +1188,13 @@
 	exports.__esModule = true;
 	exports['default'] = combineReducers;
 
-	var _createStore = __webpack_require__(4);
+	var _createStore = __webpack_require__(7);
 
-	var _isPlainObject = __webpack_require__(5);
+	var _isPlainObject = __webpack_require__(8);
 
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 
-	var _warning = __webpack_require__(19);
+	var _warning = __webpack_require__(22);
 
 	var _warning2 = _interopRequireDefault(_warning);
 
@@ -1109,10 +1326,10 @@
 	    return hasChanged ? nextState : state;
 	  };
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
 
 /***/ }),
-/* 19 */
+/* 22 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -1142,7 +1359,7 @@
 	}
 
 /***/ }),
-/* 20 */
+/* 23 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -1198,7 +1415,7 @@
 	}
 
 /***/ }),
-/* 21 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1209,7 +1426,7 @@
 
 	exports['default'] = applyMiddleware;
 
-	var _compose = __webpack_require__(22);
+	var _compose = __webpack_require__(25);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
@@ -1261,7 +1478,7 @@
 	}
 
 /***/ }),
-/* 22 */
+/* 25 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -1302,30 +1519,35 @@
 	}
 
 /***/ }),
-/* 23 */
+/* 26 */
 /***/ (function(module, exports) {
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var constants = {
-	  ADD_DAY: 'ADD_DAY',
-	  REMOVE_DAY: 'REMOVE_DAY',
-	  SET_GOAL: 'SET_GOAL',
-	  ADD_ERROR: 'ADD_ERROR',
-	  CLEAR_ERROR: 'CLEAR_ERROR',
-	  FETCH_RESORT_NAMES: 'FETCH_RESORT_NAMES',
-	  CANCEL_FETCHING: 'CANCEL_FETCHING',
-	  CHANGE_SUGGESTIONS: 'CHANGE_SUGGESTIONS',
-	  CLEAR_SUGGESTIONS: 'CLEAR_SUGGESTIONS'
-	};
+	exports.__esModule = true;
+	function createThunkMiddleware(extraArgument) {
+	  return function (_ref) {
+	    var dispatch = _ref.dispatch,
+	        getState = _ref.getState;
+	    return function (next) {
+	      return function (action) {
+	        if (typeof action === 'function') {
+	          return action(dispatch, getState, extraArgument);
+	        }
 
-	exports.default = constants;
+	        return next(action);
+	      };
+	    };
+	  };
+	}
+
+	var thunk = createThunkMiddleware();
+	thunk.withExtraArgument = createThunkMiddleware;
+
+	exports['default'] = thunk;
 
 /***/ }),
-/* 24 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1333,124 +1555,596 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.suggestions = exports.fetching = exports.allSkiDays = exports.errors = exports.skiDay = exports.goal = undefined;
+	exports.suggestResortNames = exports.randomGoals = exports.clearSuggestions = exports.changeSuggestions = exports.clearError = exports.addError = exports.setGoal = exports.removeDay = exports.addDay = undefined;
 
-	var _constants = __webpack_require__(23);
+	var _constants = __webpack_require__(3);
 
 	var _constants2 = _interopRequireDefault(_constants);
 
-	var _redux = __webpack_require__(2);
+	var _isomorphicFetch = __webpack_require__(28);
+
+	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-	var goal = exports.goal = function goal() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
-	  var action = arguments[1];
-	  return action.type === _constants2.default.SET_GOAL ? parseInt(action.payload) : state;
+	var addDay = exports.addDay = function addDay(resort, date) {
+	  var powder = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+	  var backcountry = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+	  return {
+	    type: _constants2.default.ADD_DAY,
+	    payload: {
+	      resort: resort, date: date, powder: powder, backcountry: backcountry
+	    }
+	  };
 	};
 
-	var skiDay = exports.skiDay = function skiDay() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-	  var action = arguments[1];
-	  return action.type === _constants2.default.ADD_DAY ? action.payload : state;
+	var removeDay = exports.removeDay = function removeDay(date) {
+	  return {
+	    type: _constants2.default.REMOVE_DAY,
+	    payload: date
+	  };
 	};
 
-	var errors = exports.errors = function errors() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-	  var action = arguments[1];
+	var setGoal = exports.setGoal = function setGoal(goal) {
+	  return {
+	    type: _constants2.default.SET_GOAL,
+	    payload: goal
+	  };
+	};
 
-	  switch (action.type) {
-	    case _constants2.default.ADD_ERROR:
-	      return [].concat(_toConsumableArray(state), [action.payload]);
-	    case _constants2.default.CLEAR_ERROR:
-	      return state.filter(function (message, i) {
-	        return i !== action.payload;
+	var addError = exports.addError = function addError(message) {
+	  return {
+	    type: _constants2.default.ADD_ERROR,
+	    payload: message
+	  };
+	};
+
+	var clearError = exports.clearError = function clearError(index) {
+	  return {
+	    type: _constants2.default.CLEAR_ERROR,
+	    payload: index
+	  };
+	};
+
+	var changeSuggestions = exports.changeSuggestions = function changeSuggestions(suggestions) {
+	  return {
+	    type: _constants2.default.CHANGE_SUGGESTIONS,
+	    payload: suggestions
+	  };
+	};
+
+	var clearSuggestions = exports.clearSuggestions = function clearSuggestions() {
+	  return {
+	    type: _constants2.default.CLEAR_SUGGESTIONS
+	    // payload: [],
+	  };
+	};
+
+	// thunks are functions from middleware that return another function
+	var randomGoals = exports.randomGoals = function randomGoals() {
+	  return function (dispatch, getState) {
+	    if (!getState().resortNames.fetching) {
+	      dispatch({
+	        type: _constants2.default.FETCH_RESORT_NAMES
 	      });
-	    default:
-	      return state;
-	  }
+
+	      setTimeout(function () {
+	        dispatch({
+	          type: _constants2.default.CANCEL_FETCHING
+	        });
+	      }, 1500);
+	    }
+	  };
 	};
 
-	var allSkiDays = exports.allSkiDays = function allSkiDays() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-	  var action = arguments[1];
+	// thunk for resort suggestor
+	var suggestResortNames = exports.suggestResortNames = function suggestResortNames(value) {
+	  return function (dispatch) {
+	    dispatch({
+	      type: _constants2.default.FETCH_RESORT_NAMES
+	    });
 
-	  switch (action.type) {
-	    case _constants2.default.ADD_DAY:
-	      {
-	        var hadDay = state.some(function (skiDay) {
-	          return skiDay.date === action.payload.date;
-	        });
-	        return hadDay ? state : [].concat(_toConsumableArray(state), [skiDay(null, action)]).sort(function (a, b) {
-	          return new Date(b.date) - new Date(a.date);
-	        });
-	      }
-	    case _constants2.default.REMOVE_DAY:
-	      return state.filter(function (skiDay) {
-	        return skiDay.date !== action.payload;
+	    (0, _isomorphicFetch2.default)('http://localhost:3333/resorts/' + value).then(function (response) {
+	      return response.json();
+	    }).then(function (suggestions) {
+	      dispatch({
+	        type: _constants2.default.CHANGE_SUGGESTIONS,
+	        payload: suggestions
 	      });
-	    default:
-	      return state;
-	  }
+	    })
+	    // if there is an error dispatch the error message and cancel fetching
+	    .catch(function (error) {
+	      dispatch(addError(error.message));
+	      dispatch({
+	        type: _constants2.default.CANCEL_FETCHING
+	      });
+	    });
+	  };
 	};
-
-	var fetching = exports.fetching = function fetching() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-	  var action = arguments[1];
-
-	  switch (action.type) {
-	    case _constants2.default.FETCH_RESORT_NAMES:
-	      {
-	        return true;
-	      }
-	    case _constants2.default.CANCEL_FETCHING:
-	      {
-	        return false;
-	      }
-	    case _constants2.default.CHANGE_SUGGESTIONS:
-	      {
-	        return false;
-	      }
-	    default:
-	      return state;
-	  }
-	};
-
-	var suggestions = exports.suggestions = function suggestions() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-	  var action = arguments[1];
-
-	  switch (action.type) {
-	    case _constants2.default.CLEAR_SUGGESTIONS:
-	      {
-	        return [];
-	      }
-	    case _constants2.default.CHANGE_SUGGESTIONS:
-	      {
-	        return action.payload;
-	      }
-	    default:
-	      return state;
-	  }
-	};
-
-	exports.default = (0, _redux.combineReducers)({
-	  allSkiDays: allSkiDays,
-	  goal: goal,
-	  errors: errors,
-	  resortNames: (0, _redux.combineReducers)({
-	    fetching: fetching,
-	    suggestions: suggestions
-	  })
-	});
 
 /***/ }),
-/* 25 */
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// the whatwg-fetch polyfill installs the fetch() function
+	// on the global object (window or self)
+	//
+	// Return that as the export for use in Webpack, Browserify etc.
+	__webpack_require__(29);
+	module.exports = self.fetch.bind(self);
+
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports) {
 
-	module.exports = {"allSkiDays":[{"resort":"Kirkwood","date":"2016-12-7","powder":true,"backcountry":false},{"resort":"Squaw Valley","date":"2016-12-8","powder":false,"backcountry":false},{"resort":"Mt Tallac","date":"2016-12-9","powder":false,"backcountry":true}],"goal":10,"errors":[],"resortNames":{"fetching":false,"suggestions":["Squaw Valley","Snowbird","Stowe","Steamboat"]}}
+	(function(self) {
+	  'use strict';
+
+	  if (self.fetch) {
+	    return
+	  }
+
+	  var support = {
+	    searchParams: 'URLSearchParams' in self,
+	    iterable: 'Symbol' in self && 'iterator' in Symbol,
+	    blob: 'FileReader' in self && 'Blob' in self && (function() {
+	      try {
+	        new Blob()
+	        return true
+	      } catch(e) {
+	        return false
+	      }
+	    })(),
+	    formData: 'FormData' in self,
+	    arrayBuffer: 'ArrayBuffer' in self
+	  }
+
+	  if (support.arrayBuffer) {
+	    var viewClasses = [
+	      '[object Int8Array]',
+	      '[object Uint8Array]',
+	      '[object Uint8ClampedArray]',
+	      '[object Int16Array]',
+	      '[object Uint16Array]',
+	      '[object Int32Array]',
+	      '[object Uint32Array]',
+	      '[object Float32Array]',
+	      '[object Float64Array]'
+	    ]
+
+	    var isDataView = function(obj) {
+	      return obj && DataView.prototype.isPrototypeOf(obj)
+	    }
+
+	    var isArrayBufferView = ArrayBuffer.isView || function(obj) {
+	      return obj && viewClasses.indexOf(Object.prototype.toString.call(obj)) > -1
+	    }
+	  }
+
+	  function normalizeName(name) {
+	    if (typeof name !== 'string') {
+	      name = String(name)
+	    }
+	    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+	      throw new TypeError('Invalid character in header field name')
+	    }
+	    return name.toLowerCase()
+	  }
+
+	  function normalizeValue(value) {
+	    if (typeof value !== 'string') {
+	      value = String(value)
+	    }
+	    return value
+	  }
+
+	  // Build a destructive iterator for the value list
+	  function iteratorFor(items) {
+	    var iterator = {
+	      next: function() {
+	        var value = items.shift()
+	        return {done: value === undefined, value: value}
+	      }
+	    }
+
+	    if (support.iterable) {
+	      iterator[Symbol.iterator] = function() {
+	        return iterator
+	      }
+	    }
+
+	    return iterator
+	  }
+
+	  function Headers(headers) {
+	    this.map = {}
+
+	    if (headers instanceof Headers) {
+	      headers.forEach(function(value, name) {
+	        this.append(name, value)
+	      }, this)
+	    } else if (Array.isArray(headers)) {
+	      headers.forEach(function(header) {
+	        this.append(header[0], header[1])
+	      }, this)
+	    } else if (headers) {
+	      Object.getOwnPropertyNames(headers).forEach(function(name) {
+	        this.append(name, headers[name])
+	      }, this)
+	    }
+	  }
+
+	  Headers.prototype.append = function(name, value) {
+	    name = normalizeName(name)
+	    value = normalizeValue(value)
+	    var oldValue = this.map[name]
+	    this.map[name] = oldValue ? oldValue+','+value : value
+	  }
+
+	  Headers.prototype['delete'] = function(name) {
+	    delete this.map[normalizeName(name)]
+	  }
+
+	  Headers.prototype.get = function(name) {
+	    name = normalizeName(name)
+	    return this.has(name) ? this.map[name] : null
+	  }
+
+	  Headers.prototype.has = function(name) {
+	    return this.map.hasOwnProperty(normalizeName(name))
+	  }
+
+	  Headers.prototype.set = function(name, value) {
+	    this.map[normalizeName(name)] = normalizeValue(value)
+	  }
+
+	  Headers.prototype.forEach = function(callback, thisArg) {
+	    for (var name in this.map) {
+	      if (this.map.hasOwnProperty(name)) {
+	        callback.call(thisArg, this.map[name], name, this)
+	      }
+	    }
+	  }
+
+	  Headers.prototype.keys = function() {
+	    var items = []
+	    this.forEach(function(value, name) { items.push(name) })
+	    return iteratorFor(items)
+	  }
+
+	  Headers.prototype.values = function() {
+	    var items = []
+	    this.forEach(function(value) { items.push(value) })
+	    return iteratorFor(items)
+	  }
+
+	  Headers.prototype.entries = function() {
+	    var items = []
+	    this.forEach(function(value, name) { items.push([name, value]) })
+	    return iteratorFor(items)
+	  }
+
+	  if (support.iterable) {
+	    Headers.prototype[Symbol.iterator] = Headers.prototype.entries
+	  }
+
+	  function consumed(body) {
+	    if (body.bodyUsed) {
+	      return Promise.reject(new TypeError('Already read'))
+	    }
+	    body.bodyUsed = true
+	  }
+
+	  function fileReaderReady(reader) {
+	    return new Promise(function(resolve, reject) {
+	      reader.onload = function() {
+	        resolve(reader.result)
+	      }
+	      reader.onerror = function() {
+	        reject(reader.error)
+	      }
+	    })
+	  }
+
+	  function readBlobAsArrayBuffer(blob) {
+	    var reader = new FileReader()
+	    var promise = fileReaderReady(reader)
+	    reader.readAsArrayBuffer(blob)
+	    return promise
+	  }
+
+	  function readBlobAsText(blob) {
+	    var reader = new FileReader()
+	    var promise = fileReaderReady(reader)
+	    reader.readAsText(blob)
+	    return promise
+	  }
+
+	  function readArrayBufferAsText(buf) {
+	    var view = new Uint8Array(buf)
+	    var chars = new Array(view.length)
+
+	    for (var i = 0; i < view.length; i++) {
+	      chars[i] = String.fromCharCode(view[i])
+	    }
+	    return chars.join('')
+	  }
+
+	  function bufferClone(buf) {
+	    if (buf.slice) {
+	      return buf.slice(0)
+	    } else {
+	      var view = new Uint8Array(buf.byteLength)
+	      view.set(new Uint8Array(buf))
+	      return view.buffer
+	    }
+	  }
+
+	  function Body() {
+	    this.bodyUsed = false
+
+	    this._initBody = function(body) {
+	      this._bodyInit = body
+	      if (!body) {
+	        this._bodyText = ''
+	      } else if (typeof body === 'string') {
+	        this._bodyText = body
+	      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+	        this._bodyBlob = body
+	      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+	        this._bodyFormData = body
+	      } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+	        this._bodyText = body.toString()
+	      } else if (support.arrayBuffer && support.blob && isDataView(body)) {
+	        this._bodyArrayBuffer = bufferClone(body.buffer)
+	        // IE 10-11 can't handle a DataView body.
+	        this._bodyInit = new Blob([this._bodyArrayBuffer])
+	      } else if (support.arrayBuffer && (ArrayBuffer.prototype.isPrototypeOf(body) || isArrayBufferView(body))) {
+	        this._bodyArrayBuffer = bufferClone(body)
+	      } else {
+	        throw new Error('unsupported BodyInit type')
+	      }
+
+	      if (!this.headers.get('content-type')) {
+	        if (typeof body === 'string') {
+	          this.headers.set('content-type', 'text/plain;charset=UTF-8')
+	        } else if (this._bodyBlob && this._bodyBlob.type) {
+	          this.headers.set('content-type', this._bodyBlob.type)
+	        } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+	          this.headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
+	        }
+	      }
+	    }
+
+	    if (support.blob) {
+	      this.blob = function() {
+	        var rejected = consumed(this)
+	        if (rejected) {
+	          return rejected
+	        }
+
+	        if (this._bodyBlob) {
+	          return Promise.resolve(this._bodyBlob)
+	        } else if (this._bodyArrayBuffer) {
+	          return Promise.resolve(new Blob([this._bodyArrayBuffer]))
+	        } else if (this._bodyFormData) {
+	          throw new Error('could not read FormData body as blob')
+	        } else {
+	          return Promise.resolve(new Blob([this._bodyText]))
+	        }
+	      }
+
+	      this.arrayBuffer = function() {
+	        if (this._bodyArrayBuffer) {
+	          return consumed(this) || Promise.resolve(this._bodyArrayBuffer)
+	        } else {
+	          return this.blob().then(readBlobAsArrayBuffer)
+	        }
+	      }
+	    }
+
+	    this.text = function() {
+	      var rejected = consumed(this)
+	      if (rejected) {
+	        return rejected
+	      }
+
+	      if (this._bodyBlob) {
+	        return readBlobAsText(this._bodyBlob)
+	      } else if (this._bodyArrayBuffer) {
+	        return Promise.resolve(readArrayBufferAsText(this._bodyArrayBuffer))
+	      } else if (this._bodyFormData) {
+	        throw new Error('could not read FormData body as text')
+	      } else {
+	        return Promise.resolve(this._bodyText)
+	      }
+	    }
+
+	    if (support.formData) {
+	      this.formData = function() {
+	        return this.text().then(decode)
+	      }
+	    }
+
+	    this.json = function() {
+	      return this.text().then(JSON.parse)
+	    }
+
+	    return this
+	  }
+
+	  // HTTP methods whose capitalization should be normalized
+	  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
+
+	  function normalizeMethod(method) {
+	    var upcased = method.toUpperCase()
+	    return (methods.indexOf(upcased) > -1) ? upcased : method
+	  }
+
+	  function Request(input, options) {
+	    options = options || {}
+	    var body = options.body
+
+	    if (input instanceof Request) {
+	      if (input.bodyUsed) {
+	        throw new TypeError('Already read')
+	      }
+	      this.url = input.url
+	      this.credentials = input.credentials
+	      if (!options.headers) {
+	        this.headers = new Headers(input.headers)
+	      }
+	      this.method = input.method
+	      this.mode = input.mode
+	      if (!body && input._bodyInit != null) {
+	        body = input._bodyInit
+	        input.bodyUsed = true
+	      }
+	    } else {
+	      this.url = String(input)
+	    }
+
+	    this.credentials = options.credentials || this.credentials || 'omit'
+	    if (options.headers || !this.headers) {
+	      this.headers = new Headers(options.headers)
+	    }
+	    this.method = normalizeMethod(options.method || this.method || 'GET')
+	    this.mode = options.mode || this.mode || null
+	    this.referrer = null
+
+	    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+	      throw new TypeError('Body not allowed for GET or HEAD requests')
+	    }
+	    this._initBody(body)
+	  }
+
+	  Request.prototype.clone = function() {
+	    return new Request(this, { body: this._bodyInit })
+	  }
+
+	  function decode(body) {
+	    var form = new FormData()
+	    body.trim().split('&').forEach(function(bytes) {
+	      if (bytes) {
+	        var split = bytes.split('=')
+	        var name = split.shift().replace(/\+/g, ' ')
+	        var value = split.join('=').replace(/\+/g, ' ')
+	        form.append(decodeURIComponent(name), decodeURIComponent(value))
+	      }
+	    })
+	    return form
+	  }
+
+	  function parseHeaders(rawHeaders) {
+	    var headers = new Headers()
+	    // Replace instances of \r\n and \n followed by at least one space or horizontal tab with a space
+	    // https://tools.ietf.org/html/rfc7230#section-3.2
+	    var preProcessedHeaders = rawHeaders.replace(/\r?\n[\t ]+/g, ' ')
+	    preProcessedHeaders.split(/\r?\n/).forEach(function(line) {
+	      var parts = line.split(':')
+	      var key = parts.shift().trim()
+	      if (key) {
+	        var value = parts.join(':').trim()
+	        headers.append(key, value)
+	      }
+	    })
+	    return headers
+	  }
+
+	  Body.call(Request.prototype)
+
+	  function Response(bodyInit, options) {
+	    if (!options) {
+	      options = {}
+	    }
+
+	    this.type = 'default'
+	    this.status = options.status === undefined ? 200 : options.status
+	    this.ok = this.status >= 200 && this.status < 300
+	    this.statusText = 'statusText' in options ? options.statusText : 'OK'
+	    this.headers = new Headers(options.headers)
+	    this.url = options.url || ''
+	    this._initBody(bodyInit)
+	  }
+
+	  Body.call(Response.prototype)
+
+	  Response.prototype.clone = function() {
+	    return new Response(this._bodyInit, {
+	      status: this.status,
+	      statusText: this.statusText,
+	      headers: new Headers(this.headers),
+	      url: this.url
+	    })
+	  }
+
+	  Response.error = function() {
+	    var response = new Response(null, {status: 0, statusText: ''})
+	    response.type = 'error'
+	    return response
+	  }
+
+	  var redirectStatuses = [301, 302, 303, 307, 308]
+
+	  Response.redirect = function(url, status) {
+	    if (redirectStatuses.indexOf(status) === -1) {
+	      throw new RangeError('Invalid status code')
+	    }
+
+	    return new Response(null, {status: status, headers: {location: url}})
+	  }
+
+	  self.Headers = Headers
+	  self.Request = Request
+	  self.Response = Response
+
+	  self.fetch = function(input, init) {
+	    return new Promise(function(resolve, reject) {
+	      var request = new Request(input, init)
+	      var xhr = new XMLHttpRequest()
+
+	      xhr.onload = function() {
+	        var options = {
+	          status: xhr.status,
+	          statusText: xhr.statusText,
+	          headers: parseHeaders(xhr.getAllResponseHeaders() || '')
+	        }
+	        options.url = 'responseURL' in xhr ? xhr.responseURL : options.headers.get('X-Request-URL')
+	        var body = 'response' in xhr ? xhr.response : xhr.responseText
+	        resolve(new Response(body, options))
+	      }
+
+	      xhr.onerror = function() {
+	        reject(new TypeError('Network request failed'))
+	      }
+
+	      xhr.ontimeout = function() {
+	        reject(new TypeError('Network request failed'))
+	      }
+
+	      xhr.open(request.method, request.url, true)
+
+	      if (request.credentials === 'include') {
+	        xhr.withCredentials = true
+	      } else if (request.credentials === 'omit') {
+	        xhr.withCredentials = false
+	      }
+
+	      if ('responseType' in xhr && support.blob) {
+	        xhr.responseType = 'blob'
+	      }
+
+	      request.headers.forEach(function(value, name) {
+	        xhr.setRequestHeader(name, value)
+	      })
+
+	      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
+	    })
+	  }
+	  self.fetch.polyfill = true
+	})(typeof self !== 'undefined' ? self : this);
+
 
 /***/ })
 /******/ ]);

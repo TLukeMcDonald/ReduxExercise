@@ -1,6 +1,5 @@
-import expect from 'expect';
 import storeFactory from './store';
-import { randomGoals, addDay, removeDay, setGoal, addError, clearError, changeSuggestions, clearSuggestions } from './actions';
+import { suggestResortNames, randomGoals, addDay, removeDay, setGoal, addError, clearError, changeSuggestions, clearSuggestions } from './actions';
 
 
 const store = storeFactory();
@@ -40,5 +39,6 @@ const state = store.getState();
 //   clearSuggestions() Action Creator Works!!!
 //   `);
 
-store.dispatch(randomGoals());
+// store.dispatch(randomGoals());
 
+store.dispatch(suggestResortNames('hea'));

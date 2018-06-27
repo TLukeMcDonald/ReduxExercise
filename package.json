@@ -4,14 +4,14 @@
   "description": "Learning Redux fromn Linkedin Learning",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server",
-    "build": "webpack ./index.js bundle.js"
+    "start": "webpack-dev-server"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "eslint": "^4.19.1",
     "expect": "^23.1.0",
+    "isomorphic-fetch": "^2.2.1",
     "redux": "^3.6.0",
     "redux-thunk": "^2.3.0",
     "safe-buffer": "^5.1.2"
