@@ -1,3 +1,5 @@
+var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
 module.exports = {
   entry: './src/index.js',
   output: {
@@ -17,7 +19,7 @@ module.exports = {
         exclude: /(node_modules)/,
         loader: ['babel'],
         query: {
-          presets: ['latest', 'stage-0'],
+          presets: ['latest', 'stage-0', 'react'],
         },
       },
       {
@@ -25,6 +27,22 @@ module.exports = {
         exclude: /(node_modules)/,
         loader: 'json-loader',
       },
+      {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader!autoprefixer-loader',
+      },
+      {
+        test: /\.scss$/,
+        loader: 'style-loader!css-loader!autoprefixer-loader!sass-loader',
+      },
     ],
   },
+  plugins: [
+    new OptimizeCssAssetsPlugin({
+      assetNameRegExp: /\.optimize\.css$/g,
+      cssProcessor: require('cssnano'),
+      cssProcessorOptions: { discardComments: { removeAll: true } },
+      canPrint: true,
+    }),
+  ],
 };
