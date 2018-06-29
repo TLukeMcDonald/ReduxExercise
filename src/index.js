@@ -1,44 +1,28 @@
+import C from './constants'
+import React from 'react'
+import { render } from 'react-dom'
+import routes from './routes'
+import sampleData from './initialState';
 import storeFactory from './store';
-import { suggestResortNames, randomGoals, addDay, removeDay, setGoal, addError, clearError, changeSuggestions, clearSuggestions } from './actions';
+import { Provider } from 'react-redux';
+
+const initialState = (localStorage["redux-store"]) ?
+    JSON.parse(localStorage["redux-store"]) :
+    sampleData
+
+const saveState = () =>
+    localStorage["redux-store"] = JSON.stringify(store.getState())
+
+const store = storeFactory(initialState);
+store.subscribe(saveState);
 
 
-const store = storeFactory();
-const state = store.getState();
+window.React = React;
+window.store = store;
 
-
-// store.dispatch(addDay('Heavenly', '2016-12-22'));
-
-
-// store.dispatch(removeDay('2016-12-22'));
-
-
-// store.dispatch(setGoal(20));
-
-
-// store.dispatch(addError('something went wrong'));
-// expect(store.getState().errors).toEqual(['something went wrong']);
-// console.log(`
-//   addError() Action Creator Works!!!
-//   `);
-
-// store.dispatch(clearError(0));
-// expect(store.getState().errors).toEqual([]);
-// console.log(`
-//   ClearError() Action Creator Works!!!
-//   `);
-
-// store.dispatch(changeSuggestions(['One', 'Two', 'Three']));
-// expect(store.getState().resortNames.suggestions).toEqual(['One', 'Two', 'Three']);
-// console.log(`
-//   changeSuggestions() Action Creator Works!!!
-//   `);
-
-// store.dispatch(clearSuggestions());
-// expect(store.getState().resortNames.suggestions).toEqual([]);
-// console.log(`
-//   clearSuggestions() Action Creator Works!!!
-//   `);
-
-// store.dispatch(randomGoals());
-
-store.dispatch(suggestResortNames('hea'));
+render(
+  <Provider store={store}>
+    {routes}
+  </Provider>,
+  document.getElementById('react-container')
+)
